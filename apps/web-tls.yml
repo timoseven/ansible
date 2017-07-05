@@ -1,6 +1,7 @@
 - name: Configure webserver with nginx and tls
   hosts: webservers
   sudo: True
+#变量定义，后面template和copy的时候都会用到， index.html文件里的变量也会被替换。
   vars:
     key_file: /etc/nginx/ssl/nginx.key
     cert_file: /etc/nginx/ssl/nginx.crt
@@ -32,6 +33,7 @@
     - name: copy index.html
       template: src=templates/index.html.j2 dest=/usr/share/nginx/html/index.html mode=0644
 
+#handler只会在上面的task改变了系统，才会通知handler进行执行下面的。
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
